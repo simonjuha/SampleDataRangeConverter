@@ -9,6 +9,8 @@ in_min = -1
 
 # round ouput?
 round_output = 1
+# comma seperate?
+com_sep = 1
 
 # open file
 with open(filename, 'r') as f:
@@ -18,20 +20,28 @@ with open(filename, 'r') as f:
     
     for idx, line in enumerate(lines, start=0):
         output = lines[idx].rstrip()
-        output+=str('\n')
+        
         # Chance value
         output = float(output)
         output = (output - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+        
         if round_output == 1:
-            new_lines[idx] = round(output)
+            output = round(output)
+
+        if com_sep == 1:
+            new_lines[idx] = "{}{}".format(output, str(', '))
         else:
             new_lines[idx] = output
-        print(output)
-          
+        
+
+    
 # save new file
 with open('output.txt', 'w') as new_f:
     for item in new_lines:
-        new_f.write("%s\n" % item)
+        if com_sep == 0:
+            new_f.write("%s\n" % item)
+        else:
+            new_f.write(item)
 
 new_f.close() 
 f.close()
